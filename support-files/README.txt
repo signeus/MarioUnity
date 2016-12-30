@@ -1,0 +1,1 @@
+This folder is only for supports files (music, draws, sprites and others)
