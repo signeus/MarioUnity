@@ -4,12 +4,17 @@ using System.Collections;
 public class CharacterMove : MonoBehaviour {
 
     public float maxSpeed = 10f;
-    
+    public float jump = 5f;
+
+
+
     //AXIS
     bool right = false;
     bool left = false;
     bool up = false;
     bool down = false;
+
+    bool isGround = true;
 
 	// Use this for initialization
 	void Start () {
@@ -23,10 +28,26 @@ public class CharacterMove : MonoBehaviour {
 
     void FixedUpdate()
     {
+        float jumpForce = Input.GetAxis("Jump");
+
+        float realJump = 0;
+
+        if (jumpForce > 0 && isGround)
+        {
+            realJump = jump * jumpForce;
+            GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, realJump);
+            if (realJump >= 10f)
+            {
+                isGround = false;
+            }
+        }
+
         float move = Input.GetAxis("Horizontal");
         //TODO Animation with the speed and direction
-
-        GetComponent<Rigidbody2D>().velocity = new Vector2(move * maxSpeed, GetComponent<Rigidbody2D>().velocity.y);
+        if (move > 0 || move < 0)
+        {
+            GetComponent<Rigidbody2D>().velocity = new Vector2(move * maxSpeed, GetComponent<Rigidbody2D>().velocity.y);
+        }
 
         if(move > 0 && !right)
         {
